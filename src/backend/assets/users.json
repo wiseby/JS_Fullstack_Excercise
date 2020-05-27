@@ -1,0 +1,32 @@
+[
+    {
+        "name": "lucas",
+        "password": "4321",
+        "email": "lucas@wiseby.se"
+    },
+    {
+        "name": "marina",
+        "password": "9876",
+        "email": "marina@example.se"
+    },
+    {
+        "name": "agnes",
+        "password": "0000",
+        "email": "agnes@wiseby.se"
+    },
+    {
+        "name": "elina",
+        "password": "4321",
+        "email": "elina@wiseby.se"
+    },
+    {
+        "name": "melvin",
+        "password": "4321",
+        "email": "melvin@wiseby.se"
+    },
+    {
+        "name": "silver",
+        "password": "4321",
+        "email": "silver@hundes.se"
+    }
+]
