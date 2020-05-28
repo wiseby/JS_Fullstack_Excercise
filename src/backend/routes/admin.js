@@ -20,27 +20,24 @@ router.post('/', function(req, res) {
     if(err) throw err;
 
     var users = JSON.parse(data);
-    var usersLength = users.length;
-    console.log(usersLength);
-    console.log("Users in file:");
-    console.log(users);
     
     users.forEach(user => {
       
       if(user.name == reqUser.name) {
         // Password autentication
-        if(user.password == reqUser.password) {
-          activeUser = user;     
-          console.log("Setting activeUser!!!");
-        }
+        if(user.password == reqUser.password) { activeUser = user; }
       }
-      console.log('Active User: ' + activeUser);
-      
     });
     
     // Create response data
     if(activeUser.isAdmin === true) {
-      res.send(users);
+      res.render(
+        'admin', 
+        { 
+          title: 'Admin',
+          adminTitle: `Welcome ${activeUser.name}!`,
+          users: users.filter(user => user.isSubscriber === true)
+        });
     } else {
       res.sendStatus(401);
     }

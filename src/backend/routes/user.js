@@ -40,10 +40,27 @@ router.post("/login", jsonParser, (req, res, next) => {
   });
 });
 
+
 router.post('/register', jsonParser, (req, res) => {
   var newUser = req.body;
+  var changeIndex;
 
-  fs.readFile(USERS_URL, )
+  fs.readFile(USERS_URL, (err, data) => {
+    var users = JSON.parse(data);
+    var oldUser;
+
+    users.forEach((user, idx) => {
+      if(user.name === newUser.name) {
+        oldUser = user;
+        changeIndex = idx;
+      }
+    });
+    // If properties are empty ignore change
+    var changedUser = changeUser(newUser, oldUser);
+
+    users
+
+  });
 });
 
 function userResponse(user, users) {

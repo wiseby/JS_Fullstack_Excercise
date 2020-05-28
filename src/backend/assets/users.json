@@ -3,42 +3,49 @@
         "name": "lucas",
         "password": "4321",
         "email": "lucas@wiseby.se",
-        "isAdmin": false
+        "isAdmin": false,
+        "isSubscriber": true
     },
     {
         "name": "marina",
         "password": "9876",
         "email": "marina@example.se",
-        "isAdmin": false
+        "isAdmin": false,
+        "isSubscriber": false
     },
     {
         "name": "agnes",
         "password": "0000",
         "email": "agnes@wiseby.se",
-        "isAdmin": false
+        "isAdmin": false,
+        "isSubscriber": true
     },
     {
         "name": "elina",
         "password": "4321",
         "email": "elina@wiseby.se",
-        "isAdmin": false
+        "isAdmin": false,
+        "isSubscriber": true
     },
     {
         "name": "melvin",
         "password": "4321",
         "email": "melvin@wiseby.se",
-        "isAdmin": false
+        "isAdmin": false,
+        "isSubscriber": false
     },
     {
         "name": "silver",
         "password": "4321",
-        "email": "silver@hundes.se",
-        "isAdmin": false
+        "email": "silver@hundens.se",
+        "isAdmin": false,
+        "isSubscriber": true
     },
     {
         "name": "admin",
         "password": "1234",
         "email": "admin@viktigpetter.se",
-        "isAdmin": true
+        "isAdmin": true,
+        "isSubscriber": false
     }
 ]

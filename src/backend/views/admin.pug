@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  h1= adminTitle
+  h2= "Subscribers:"
+  ul
+    each mail in mails= users
+      li= mail.email
