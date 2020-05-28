@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
 var router = express.Router();
 
-router.post('/', jsonParser, function(req, res) {
+router.post('/', function(req, res) {
 
   // Parse the incomming requests body for user authentication
   var reqUser = req.body;
@@ -15,7 +15,7 @@ router.post('/', jsonParser, function(req, res) {
 
   var activeUser;
 
-  fs.readFile('./assets/users.json', (err, data) => {
+  fs.readFile(USERS_URL, (err, data) => {
 
     if(err) throw err;
 
