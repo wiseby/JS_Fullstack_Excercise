@@ -9,8 +9,9 @@
     {
         "name": "lucas",
         "password": "0987",
-        "email": "new@mail.com",
-        "isSubscriber": true
+        "email": "lucas@example.se",
+        "isSubscriber": false,
+        "isAdmin": false
     },
     {
         "name": "agnes",
