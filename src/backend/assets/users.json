@@ -9,8 +9,9 @@
     {
         "name": "lucas",
         "password": "0987",
-        "email": "new@mail.com",
-        "isSubscriber": true
+        "email": "lucas@example.se",
+        "isSubscriber": false,
+        "isAdmin": false
     },
     {
         "name": "agnes",
@@ -46,5 +47,9 @@
         "email": "elina@stallet.se",
         "isSubscriber": true,
         "isAdmin": false
+    },
+    {
+        "name": "anotherUser",
+        "password": "U2FsdGVkX1/DUO8Gx9AhSby1eteigU08bJRtOzyjy0Q="
     }
 ]

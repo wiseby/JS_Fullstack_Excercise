@@ -1,6 +1,7 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var fs = require("fs");
+var crypto = require("crypto-js");
 var jsonParser = bodyParser.json();
 var router = express.Router();
 
@@ -15,42 +16,49 @@ router.post("/login", jsonParser, (req, res, next) => {
     if (err) throw err;
 
     var users = JSON.parse(data);
-
+    console.log(users);
     // Verify user
-    users.forEach((user) => {});
-    activeUser = verifyUser(loginUser, user);
+    users.forEach((user) => {
+      activeUser = verifyUser(loginUser, user);
+    });
     let response = userResponse(activeUser, users);
     if (response.status >= 400) {
-      res.sendStatus(400);
+      res.send({message: 'Failed to verify user'});
     } else {
       res.send(response);
     }
   });
 });
 
-
 // Create new user
 router.post("/register", jsonParser, (req, res) => {
   var newUser = req.body;
+  newUser.password = crypto.AES.encrypt(
+    newUser.password,
+    SECRET_KEY
+  ).toString();
+  let isUnique = true;
+  console.log(newUser);
 
   getFileContent(USERS_URL, (data) => {
     let users = JSON.parse(data);
 
     users.forEach((user) => {
       if (user.name === newUser.name) {
-        res
-          .sendStatus(400)
-          .send({
-            message: `user with name: "${newUser.name}" already exists`,
-          });
+        res.send({
+          message: `user with name: "${newUser.name}" already exists`,
+        });
+        isUnique = false;
       }
     });
-    users.push(newUser);
-    saveDataToFile(USERS_URL, users);
+    if(isUnique) {
+      users.push(newUser);
+      saveDataToFile(USERS_URL, users);
+    }
   });
 });
 
-
+// Change User Info
 router.put("/", jsonParser, (req, res) => {
   var incommingUser = req.body;
   console.log(incommingUser);
@@ -59,24 +67,25 @@ router.put("/", jsonParser, (req, res) => {
     let users = JSON.parse(data);
     let usersLength = users.length;
     users.forEach((user, idx) => {
-      if(verifyUser(incommingUser, user)) {
+      if (verifyUser(incommingUser, user)) {
         users[idx] = incommingUser;
         console.log(user);
       }
     });
-    if(users.length === usersLength) {
+    if (users.length === usersLength) {
       saveDataToFile(USERS_URL, users);
     }
     res.send(incommingUser);
   });
 });
 
-
 function verifyUser(reqUser, serverUser) {
-  if (serverUser.name === reqUser.name 
-      &&
-      serverUser.password === reqUser.password) {
-    return serverUser;
+  if (serverUser.name === reqUser.name) {
+    var bytes = crypto.AES.decrypt(serverUser.password, SECRET_KEY);
+    var decryptedData = bytes.toString(crypto.enc.Utf8);
+    if (reqUser.password === decryptedData) {
+      return serverUser;
+    }
   }
 }
 
