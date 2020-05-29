@@ -31,12 +31,15 @@ router.post('/', function(req, res) {
     
     // Create response data
     if(activeUser.isAdmin === true) {
+      var emailAdresses = users.filter(user => user.isSubscriber === true);
+      emailAdresses = emailAdresses.map(user => user.email).join();
       res.render(
         'admin', 
         { 
           title: 'Admin',
           adminTitle: `Welcome ${activeUser.name}!`,
-          users: users.filter(user => user.isSubscriber === true)
+          users: users,
+          emailAdresses: emailAdresses
         });
     } else {
       res.sendStatus(401);
