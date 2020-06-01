@@ -1,67 +1,108 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var fs = require("fs");
+var crypto = require("crypto-js");
 var jsonParser = bodyParser.json();
 var router = express.Router();
 
-/* GET users listing. */
 router.post("/login", jsonParser, (req, res, next) => {
   // Get user from request
   let loginUser = req.body;
-  console.log(loginUser);
 
   var activeUser;
 
   // Get users from file
   fs.readFile(USERS_URL, (err, data) => {
     if (err) throw err;
-    
-    var users = JSON.parse(data);
-    console.log("users from file");
-    console.log(users);
 
+    var users = JSON.parse(data);
+    console.log(users);
     // Verify user
     users.forEach((user) => {
-      if (
-        user.name === loginUser.name &&
-        user.password === loginUser.password
-      ) {
-        activeUser = user;
-        console.log("activeUser:");
-        console.log(activeUser);
-      }
+      activeUser = verifyUser(loginUser, user);
     });
     let response = userResponse(activeUser, users);
-    if(response.status >= 400) {
-      res.sendStatus(400);
+    if (response.status >= 400) {
+      res.send({message: 'Failed to verify user'});
     } else {
       res.send(response);
     }
   });
 });
 
-
-router.post('/register', jsonParser, (req, res) => {
+// Create new user
+router.post("/register", jsonParser, (req, res) => {
   var newUser = req.body;
-  var changeIndex;
+  newUser.password = crypto.AES.encrypt(
+    newUser.password,
+    SECRET_KEY
+  ).toString();
+  let isUnique = true;
+  console.log(newUser);
 
-  fs.readFile(USERS_URL, (err, data) => {
-    var users = JSON.parse(data);
-    var oldUser;
+  getFileContent(USERS_URL, (data) => {
+    let users = JSON.parse(data);
 
-    users.forEach((user, idx) => {
-      if(user.name === newUser.name) {
-        oldUser = user;
-        changeIndex = idx;
+    users.forEach((user) => {
+      if (user.name === newUser.name) {
+        res.send({
+          message: `user with name: "${newUser.name}" already exists`,
+        });
+        isUnique = false;
       }
     });
-    // If properties are empty ignore change
-    var changedUser = changeUser(newUser, oldUser);
-
-    users
-
+    if(isUnique) {
+      users.push(newUser);
+      saveDataToFile(USERS_URL, users);
+    }
   });
 });
+
+// Change User Info
+router.put("/", jsonParser, (req, res) => {
+  var incommingUser = req.body;
+  console.log(incommingUser);
+
+  getFileContent(USERS_URL, (data) => {
+    let users = JSON.parse(data);
+    let usersLength = users.length;
+    users.forEach((user, idx) => {
+      if (verifyUser(incommingUser, user)) {
+        users[idx] = incommingUser;
+        console.log(user);
+      }
+    });
+    if (users.length === usersLength) {
+      saveDataToFile(USERS_URL, users);
+    }
+    res.send(incommingUser);
+  });
+});
+
+function verifyUser(reqUser, serverUser) {
+  if (serverUser.name === reqUser.name) {
+    var bytes = crypto.AES.decrypt(serverUser.password, SECRET_KEY);
+    var decryptedData = bytes.toString(crypto.enc.Utf8);
+    if (reqUser.password === decryptedData) {
+      return serverUser;
+    }
+  }
+}
+
+function getFileContent(srcPath, callback) {
+  fs.readFile(srcPath, (err, data) => {
+    if (err) throw err;
+    callback(data);
+  });
+}
+
+function saveDataToFile(srcPath, data) {
+  let stringData = JSON.stringify(data, null, 4);
+  fs.writeFile(srcPath, stringData, (err) => {
+    if (err) throw err;
+    console.log("Data successfully saved");
+  });
+}
 
 function userResponse(user, users) {
   // If user credentials are correct redirect to dashboard
@@ -72,23 +113,21 @@ function userResponse(user, users) {
       let resBody = {
         user: user,
         users: users,
-        status: 200
+        status: 200,
       };
       return resBody;
     } else {
       // return active user only.
       let resBody = {
         user: user,
-        status: 200
+        status: 200,
       };
       return resBody;
     }
   } else {
     // Else respond with an error 401 client handles creation of account.
-    return { status: 401 }
+    return { status: 401 };
   }
 }
-
-
 
 module.exports = router;

@@ -17,6 +17,7 @@
     "pug": "^3.0.0"
   },
   "devDependencies": {
+    "crypto-js": "^4.0.0",
     "dotenv": "^8.2.0"
   }
 }

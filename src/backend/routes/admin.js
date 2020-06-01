@@ -1,7 +1,5 @@
 var express = require('express');
 var fs = require('fs');
-var bodyParser = require('body-parser');
-var jsonParser = bodyParser.json();
 var router = express.Router();
 
 router.post('/', function(req, res) {
@@ -31,12 +29,15 @@ router.post('/', function(req, res) {
     
     // Create response data
     if(activeUser.isAdmin === true) {
+      var emailAdresses = users.filter(user => user.isSubscriber === true);
+      emailAdresses = emailAdresses.map(user => user.email).join();
       res.render(
         'admin', 
         { 
           title: 'Admin',
           adminTitle: `Welcome ${activeUser.name}!`,
-          users: users.filter(user => user.isSubscriber === true)
+          users: users,
+          emailAdresses: emailAdresses
         });
     } else {
       res.sendStatus(401);

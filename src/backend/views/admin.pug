@@ -2,7 +2,10 @@ extends layout
 
 block content
   h1= adminTitle
-  h2= "Subscribers:"
+  h2= "Users in system:"
   ul
-    each mail in mails= users
-      li= mail.email
+    each user in users= users
+      li= user.name
+
+  h2= "Emails to send Newsletters:"
+  p= emailAdresses

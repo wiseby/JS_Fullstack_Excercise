@@ -13,11 +13,11 @@ var adminRouter = require('./routes/admin');
 process.env.NODE_ENV = 'development';
 
 if(process.env.NODE_ENV !== 'production') {
-  require('dotenv').load;
+  require('dotenv').config();
 }
 
-global.USERS_URL = process.env.USER_URL || './assets/users.json';
-
+global.USERS_URL = process.env.USERS_URL;
+global.SECRET_KEY = process.env.SECRET_KEY;
 var app = express();
 
 // view engine setup

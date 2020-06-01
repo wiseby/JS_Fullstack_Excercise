@@ -47,9 +47,5 @@
         "email": "elina@stallet.se",
         "isSubscriber": true,
         "isAdmin": false
-    },
-    {
-        "name": "anotherUser",
-        "password": "U2FsdGVkX1/DUO8Gx9AhSby1eteigU08bJRtOzyjy0Q="
     }
 ]
