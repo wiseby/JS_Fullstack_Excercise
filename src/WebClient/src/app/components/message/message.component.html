@@ -1,0 +1,3 @@
+<div class="jumbotron danger" *ngIf="messageService.messages.length">
+  <h2 *ngFor="let message of messageService.messages">{{message}}</h2>
+</div>

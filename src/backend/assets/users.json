@@ -51,5 +51,9 @@
     {
         "name": "anotherUser",
         "password": "U2FsdGVkX1/DUO8Gx9AhSby1eteigU08bJRtOzyjy0Q="
+    },
+    {
+        "name": "newUser",
+        "password": "U2FsdGVkX1/O1eEWtp8Cu5g1aTXd+thOckDgCYRLi8c="
     }
 ]
