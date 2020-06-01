@@ -16,7 +16,6 @@ router.post("/login", jsonParser, (req, res, next) => {
     if (err) throw err;
 
     var users = JSON.parse(data);
-    console.log(users);
     // Verify user
     users.forEach((user) => {
       activeUser = verifyUser(loginUser, user);
@@ -38,7 +37,6 @@ router.post("/register", jsonParser, (req, res) => {
     SECRET_KEY
   ).toString();
   let isUnique = true;
-  console.log(newUser);
 
   getFileContent(USERS_URL, (data) => {
     let users = JSON.parse(data);
@@ -69,7 +67,6 @@ router.put("/", jsonParser, (req, res) => {
     users.forEach((user, idx) => {
       if (verifyUser(incommingUser, user)) {
         users[idx] = incommingUser;
-        console.log(user);
       }
     });
     if (users.length === usersLength) {
