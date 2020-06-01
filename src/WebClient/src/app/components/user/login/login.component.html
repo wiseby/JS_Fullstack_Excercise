@@ -1,0 +1,37 @@
+<div class="container">
+  <form class="form-signin text-center">
+    <img
+      class="mb-4"
+      src="https://chsakell.files.wordpress.com/2016/06/angular-io-logo.png"
+      alt=""
+      width="150"
+      height=""
+    />
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <label for="inputEmail" class="sr-only">Email address</label>
+    <input
+      ([ngModel])="user.name"
+      type="username"
+      id="inputUsername"
+      class="form-control"
+      placeholder="Username"
+      required
+      autofocus
+    />
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input
+      ([ngModel])="user.password"
+      type="password"
+      id="inputPassword"
+      class="form-control"
+      placeholder="Password"
+      required
+    />
+    <button class="btn btn-lg btn-primary btn-block" type="submit" (click)="onLogin()">
+      Sign in
+    </button>
+    <button class="btn btn-lg btn-secondary btn-block" type="button">
+      Register
+    </button>
+  </form>
+</div>
