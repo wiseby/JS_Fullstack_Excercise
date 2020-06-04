@@ -82,15 +82,15 @@ router.put("/", jsonParser, (req, res) => {
         users[idx] = incommingUser.userData;
         users[idx].password = tempPass; 
       } else { 
-        res.send().statusCode(403);
-       }
+        res.statusCode = 403;
+      }
     });
-
-    if (users.length === usersLength) {
+    
+    if (users.length === usersLength && users.length !== 0) {
       saveDataToFile(USERS_URL, users);
     }
-
     res.send(incommingUser);
+
   });
 });
 
@@ -108,7 +108,7 @@ function verifyUser(reqUser, serverUser) {
 function getFileContent(srcPath, callback) {
     fs.readFile(srcPath, (err, data) => {
       if (err && err.code === 'ENOENT' | 'ENOTDIR') {
-        console.log('correct erroro catch');
+        console.log('correct error catch');
       };
       callback(data);
     });
