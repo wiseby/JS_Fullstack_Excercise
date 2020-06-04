@@ -18,18 +18,25 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute
     ) { }
 
-  user: LoginRequest;
-  activeUser: User = null;
+  user: LoginRequest = {
+    name: "",
+    password: ""
+  };
+
+  activeUser: User;
 
   onLogin(): void {
-    this.userService.getUser(this.user).subscribe(response => {
-      if (response) {
-        localStorage.setItem('activeUser', JSON.stringify(response));
-      } else {
-        this.messageService.add('Register today to get our awesome newsletter!');
-        this.router.navigate(['register']);
-      }
 
+    this.userService.login(this.user).subscribe(response => {
+      console.log(response);
+      localStorage.setItem('activeUser', JSON.stringify(response.body));
+      console.log(localStorage.getItem('activeUser'));
+      this.router.navigate(['../dashboard'], {relativeTo: this.route});
+    },
+    (error) => {
+      this.messageService.clear();
+      this.messageService.add(error.error.message);
+      this.messageService.add('Register today to get our awesome newsletter!');
     });
   }
 

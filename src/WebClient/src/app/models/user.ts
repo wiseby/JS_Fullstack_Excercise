@@ -8,3 +8,12 @@ export interface User {
   email: string;
   isSubscriber: boolean;
 }
+
+export interface ChangeUserRequest {
+  userData: {
+    name: string;
+    email: string;
+    isSubscriber: boolean;
+  }
+  password: string;
+}

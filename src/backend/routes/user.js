@@ -9,7 +9,7 @@ router.post("/login", jsonParser, (req, res, next) => {
   // Get user from request
   let loginUser = req.body;
 
-  var activeUser;
+  let activeUser;
 
   // Get users from file
   fs.readFile(USERS_URL, (err, data) => {
@@ -21,9 +21,11 @@ router.post("/login", jsonParser, (req, res, next) => {
       activeUser = verifyUser(loginUser, user);
     });
     let response = userResponse(activeUser, users);
-    if (response.status >= 400) {
-      res.send({message: 'Failed to verify user'});
+    if (!activeUser) {
+      res.statusCode = 404;
+      res.send(response);
     } else {
+      console.log(response);
       res.send(response);
     }
   });
@@ -32,6 +34,7 @@ router.post("/login", jsonParser, (req, res, next) => {
 // Create new user
 router.post("/register", jsonParser, (req, res) => {
   var newUser = req.body;
+  console.log(newUser);
   newUser.password = crypto.AES.encrypt(
     newUser.password,
     SECRET_KEY
@@ -43,6 +46,7 @@ router.post("/register", jsonParser, (req, res) => {
 
     users.forEach((user) => {
       if (user.name === newUser.name) {
+        res.statusCode = 400;
         res.send({
           message: `user with name: "${newUser.name}" already exists`,
         });
@@ -52,6 +56,8 @@ router.post("/register", jsonParser, (req, res) => {
     if(isUnique) {
       users.push(newUser);
       saveDataToFile(USERS_URL, users);
+      res.statusCode = 200;
+      res.send({name: newUser.name});
     }
   });
 });
@@ -61,20 +67,33 @@ router.put("/", jsonParser, (req, res) => {
   var incommingUser = req.body;
   console.log(incommingUser);
 
+  let verificationData = {
+    name: incommingUser.userData.name,
+    password: incommingUser.password
+  };
+
   getFileContent(USERS_URL, (data) => {
     let users = JSON.parse(data);
     let usersLength = users.length;
+
     users.forEach((user, idx) => {
-      if (verifyUser(incommingUser, user)) {
-        users[idx] = incommingUser;
-      }
+      if (verifyUser(verificationData, user)) {
+        tempPass = users[idx].password;
+        users[idx] = incommingUser.userData;
+        users[idx].password = tempPass; 
+      } else { 
+        res.send().statusCode(403);
+       }
     });
+
     if (users.length === usersLength) {
       saveDataToFile(USERS_URL, users);
     }
+
     res.send(incommingUser);
   });
 });
+
 
 function verifyUser(reqUser, serverUser) {
   if (serverUser.name === reqUser.name) {
@@ -87,11 +106,14 @@ function verifyUser(reqUser, serverUser) {
 }
 
 function getFileContent(srcPath, callback) {
-  fs.readFile(srcPath, (err, data) => {
-    if (err) throw err;
-    callback(data);
-  });
+    fs.readFile(srcPath, (err, data) => {
+      if (err && err.code === 'ENOENT' | 'ENOTDIR') {
+        console.log('correct erroro catch');
+      };
+      callback(data);
+    });
 }
+
 
 function saveDataToFile(srcPath, data) {
   let stringData = JSON.stringify(data, null, 4);
@@ -103,27 +125,32 @@ function saveDataToFile(srcPath, data) {
 
 function userResponse(user, users) {
   // If user credentials are correct redirect to dashboard
-  if (user) {
+  if (user !== undefined) {
     // Check isAdmin instead load admin dashboard.
     if (user.isAdmin) {
       // return user and all users.
       let resBody = {
-        user: user,
-        users: users,
-        status: 200,
+        user: {
+          name: user.name,
+          email: user.email
+        },
+        users: users
       };
       return resBody;
     } else {
       // return active user only.
       let resBody = {
-        user: user,
-        status: 200,
+        name: user.name,
+        email: user.email,
+        isSubscriber: user.isSubscriber
       };
       return resBody;
     }
   } else {
     // Else respond with an error 401 client handles creation of account.
-    return { status: 401 };
+    return { 
+      message: "Account doesn't exist"
+    };
   }
 }
 

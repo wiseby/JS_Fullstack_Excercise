@@ -1,59 +1,8 @@
 [
     {
-        "name": "admin",
-        "password": "1234",
-        "email": "admin@viktigpetter.se",
+        "name": "Lucas",
+        "email": "awdawdawd",
         "isSubscriber": true,
-        "isAdmin": true
-    },
-    {
-        "name": "lucas",
-        "password": "0987",
-        "email": "lucas@example.se",
-        "isSubscriber": false,
-        "isAdmin": false
-    },
-    {
-        "name": "agnes",
-        "password": "qwerty",
-        "email": "agnes@wiseby.se",
-        "isSubscriber": true,
-        "isAdmin": false
-    },
-    {
-        "name": "marina",
-        "password": "snygging",
-        "email": "marina@hotstuff.se",
-        "isSubscriber": true,
-        "isAdmin": false
-    },
-    {
-        "name": "silver",
-        "password": "ben",
-        "email": "bästahunden@hundens.se",
-        "isSubscriber": false,
-        "isAdmin": true
-    },
-    {
-        "name": "melvin",
-        "password": "1234",
-        "email": "melvin@grabben.se",
-        "isSubscriber": false,
-        "isAdmin": false
-    },
-    {
-        "name": "elina",
-        "password": "zxcv",
-        "email": "elina@stallet.se",
-        "isSubscriber": true,
-        "isAdmin": false
-    },
-    {
-        "name": "anotherUser",
-        "password": "U2FsdGVkX1/DUO8Gx9AhSby1eteigU08bJRtOzyjy0Q="
-    },
-    {
-        "name": "newUser",
-        "password": "U2FsdGVkX1/O1eEWtp8Cu5g1aTXd+thOckDgCYRLi8c="
+        "password": "U2FsdGVkX194m6zWZJulLmgLQ2YR8v/R505p6nXUGEo="
     }
 ]

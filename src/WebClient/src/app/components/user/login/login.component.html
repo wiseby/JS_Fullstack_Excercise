@@ -8,23 +8,25 @@
       height=""
     />
     <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail" class="sr-only">Email address</label>
+    <label for="name" class="sr-only">Email address</label>
     <input
-      ([ngModel])="(user.name)"
+      [(ngModel)]="user.name"
       type="username"
       id="inputUsername"
       class="form-control"
       placeholder="Username"
+      name="name"
       required
       autofocus
     />
-    <label for="inputPassword" class="sr-only">Password</label>
+    <label for="password" class="sr-only">Password</label>
     <input
-      ([ngModel])="(user.password)"
+      [(ngModel)]="user.password"
       type="password"
       id="inputPassword"
       class="form-control"
       placeholder="Password"
+      name="password"
       required
     />
     <button

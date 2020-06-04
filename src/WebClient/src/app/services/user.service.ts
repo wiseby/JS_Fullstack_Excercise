@@ -1,49 +1,45 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError, of } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
-import { LoginRequest, User } from '../models/user';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { LoginRequest, User, ChangeUserRequest } from '../models/user';
 import { environment } from '../../environments/environment';
-import { MessageService } from './message.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private readonly userLoginUrl = environment.apiUrl + '/user/login';
-  private readonly adminLoginUrl = environment.apiUrl + '/admin';
 
-  httpOptions = {
-    headers: new HttpHeaders ({
-    'Content-Type': 'application/json'
-  })
+  private readonly loginUrl = environment.apiUrl + '/user/login';
+  private readonly userRegisterURL = environment.apiUrl + '/user/register';
+  private readonly userUrl = environment.apiUrl + '/user';
+
+
+  private readonly httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    observe: 'response' as const
   };
 
-  constructor(private httpClient: HttpClient, private messageService: MessageService) { }
 
-  getUser(user: LoginRequest): Observable<User> {
-    return this.httpClient.post<User>(this.userLoginUrl, user, this.httpOptions)
-      .pipe(
-        catchError(this.handleError<User>('getUser', null))
-      );
+  constructor(private httpClient: HttpClient) { }
+
+  
+  login(user: LoginRequest): Observable<HttpResponse<any>> {
+    return this.httpClient.post<any>(this.loginUrl, user, this.httpOptions);
   }
 
- /**
- * Handle Http operation that failed.
- * Let the app continue.
- * @param operation - name of the operation that failed
- * @param result - optional value to return as the observable result
- */
-private handleError<T>(operation = 'operation', result?: T) {
-  return (error: any): Observable<T> => {
 
-    // TODO: send the error to remote logging infrastructure
-    console.error(error); // log to console instead
-    this.messageService.add(operation + error);
+  register(user: LoginRequest): Observable<HttpResponse<any>> {
+    return this.httpClient.post<any>(this.userRegisterURL, user, this.httpOptions);
+  }
 
-    // Let the app keep running by returning an empty result.
-    return of(result as T);
-  };
-}
+
+  saveChanges(user: User, userPassword: string): Observable<HttpResponse<any>> {
+    const data: ChangeUserRequest = {
+      userData: user,
+      password: userPassword
+    };
+    console.log(user);
+    return this.httpClient.put<any>(this.userUrl, data, this.httpOptions);
+  }
 }
