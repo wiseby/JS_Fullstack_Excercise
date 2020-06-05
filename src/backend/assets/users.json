@@ -1,26 +1,8 @@
 [
     {
-        "name": "agnes",
-        "email": "ändrat@example.se",
-        "isSubscriber": false,
-        "password": "U2FsdGVkX1/Ubx2aqZhh0hkyt0k522IAZxtQDdaubUU="
-    },
-    {
-        "name": "agnes",
-        "email": "ändrat@example.se",
-        "isSubscriber": false,
-        "password": "U2FsdGVkX1/Ubx2aqZhh0hkyt0k522IAZxtQDdaubUU="
-    },
-    {
         "name": "wiseby",
-        "email": "ändradeigen@live.se",
+        "email": "hello@gmail.com",
         "isSubscriber": true,
-        "password": "U2FsdGVkX1+bsS8XuELQJ6aLGIPRKCSAB4tv8oQgpRM="
-    },
-    {
-        "name": "marina",
-        "email": "marina.c1983@gmail.com",
-        "isSubscriber": true,
-        "password": "U2FsdGVkX18jEZYbLLLJgVZ3YOCv639MzenQ6dIVQk4="
+        "password": "U2FsdGVkX1+Mc3snm1sMKa9WrxMce5ZBNPCZNbp8A/k="
     }
 ]

@@ -20,12 +20,12 @@ router.post("/login", jsonParser, (req, res, next) => {
     users.forEach((user) => {
       activeUser = verifyUser(loginUser, user);
     });
-    let response = userResponse(activeUser, users);
-    if (!activeUser) {
-      res.statusCode = 404;
+    let response = userResponse(activeUser);
+    if (activeUser) {
+      console.log(response);
       res.send(response);
     } else {
-      console.log(response);
+      res.statusCode = 404;
       res.send(response);
     }
   });
@@ -135,29 +135,17 @@ function saveDataToFile(srcPath, data) {
   });
 }
 
-function userResponse(user, users) {
+function userResponse(user) {
+  console.log(user);
+  
   // If user credentials are correct redirect to dashboard
-  if (user !== undefined) {
-    // Check isAdmin instead load admin dashboard.
-    if (user.isAdmin) {
-      // return user and all users.
-      let resBody = {
-        user: {
-          name: user.name,
-          email: user.email
-        },
-        users: users
-      };
-      return resBody;
-    } else {
-      // return active user only.
-      let resBody = {
-        name: user.name,
-        email: user.email,
-        isSubscriber: user.isSubscriber
-      };
-      return resBody;
-    }
+  if (user !== null && user !== undefined) {
+    let resBody = {
+      name: user.name,
+      email: user.email,
+      isSubscriber: user.isSubscriber
+    };
+    return resBody;
   } else {
     // Else respond with an error 401 client handles creation of account.
     return { 
