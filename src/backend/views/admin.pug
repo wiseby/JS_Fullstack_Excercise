@@ -1,11 +1,17 @@
 extends layout
 
 block content
-  h1= adminTitle
-  h2= "Users in system:"
-  ul
-    each user in users= users
-      li= user.name
-
-  h2= "Emails to send Newsletters:"
-  p= emailAdresses
+  div.row
+    h1= adminTitle
+  div.row
+    h2= "Users in system:"
+  div.row  
+    ul
+      each user in users= users
+        li= user.name
+  div.row
+      h2= "Emails to send Newsletters:"
+  div.row
+    p= emailAdresses
+  div.row
+    a.btn.btn-warning(href="/admin") Logout

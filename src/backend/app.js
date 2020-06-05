@@ -18,6 +18,7 @@ if(process.env.NODE_ENV !== 'production') {
 }
 
 global.USERS_URL = process.env.USERS_URL;
+global.ADMIN_URL = process.env.ADMIN_URL;
 global.SECRET_KEY = process.env.SECRET_KEY;
 var app = express();
 
