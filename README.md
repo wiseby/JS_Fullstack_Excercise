@@ -26,3 +26,5 @@ WebClient with Angular 9
 ---
 
 Modern webdevelopment often uses web-frameworks. This was no exception because the assignment specifications also stated that this was a requirement. I choose Angular 9 instead of React because I was already reaserching it before this project started. 
+
+Also a smaler introduction making the project a desktop app using **Electron**
