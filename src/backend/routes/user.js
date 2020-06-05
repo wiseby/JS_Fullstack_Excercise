@@ -67,6 +67,8 @@ router.put("/", jsonParser, (req, res) => {
   var incommingUser = req.body;
   console.log(incommingUser);
 
+  let userExists = false;
+
   let verificationData = {
     name: incommingUser.userData.name,
     password: incommingUser.password
@@ -77,20 +79,24 @@ router.put("/", jsonParser, (req, res) => {
     let usersLength = users.length;
 
     users.forEach((user, idx) => {
-      if (verifyUser(verificationData, user)) {
+      if (verifyUser(verificationData, user) !== null) {
+        // TODO try flattening operator (...) to prevent password overwrite.
         tempPass = users[idx].password;
         users[idx] = incommingUser.userData;
         users[idx].password = tempPass; 
-      } else { 
-        res.statusCode = 403;
-      }
+        userExists = true;
+      } 
     });
-    
-    if (users.length === usersLength && users.length !== 0) {
-      saveDataToFile(USERS_URL, users);
-    }
-    res.send(incommingUser);
 
+    // TODO These conditions doesnt make sence!!!
+    // Time to refactor!
+    if(userExists && users.length === usersLength && users.length !== 0) { 
+      saveDataToFile(USERS_URL, users);
+      res.send(incommingUser);
+    } else {
+      console.log('sending 403 response');
+      res.statusCode = 403;
+    }
   });
 });
 
@@ -100,8 +106,14 @@ function verifyUser(reqUser, serverUser) {
     var bytes = crypto.AES.decrypt(serverUser.password, SECRET_KEY);
     var decryptedData = bytes.toString(crypto.enc.Utf8);
     if (reqUser.password === decryptedData) {
+      console.log('verification passed');
+      
       return serverUser;
+    } else {
+      return null;
     }
+  } else {
+    return null;
   }
 }
 
